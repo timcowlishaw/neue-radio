@@ -2,8 +2,9 @@
 let phatbeat = require('phatbeat');
 let WebSocket = require('ws');
 let buttons = phatbeat.getButtonPins();
-const ws = new WebSocket('ws://' + location.hostname + ':8000');
-ws.on('open', function(ws) {
+const ws = new WebSocket('ws://localhost:8000');
+ws.on('open', function() {
+    console.log('connected');
     buttons.forEach(function(button) {
         const stream = phatbeat.buttonStream(button['pin']);
         stream.on("pinChange", function(pin, pinState) {
@@ -13,7 +14,4 @@ ws.on('open', function(ws) {
             }
         });
     });
-};)
-ws.addEventListener('open', function (evt) {
-    console.log('connected');
 });
