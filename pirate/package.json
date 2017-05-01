@@ -9,6 +9,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "phatbeat": "^1.0.0"
+    "phatbeat": "^1.0.0",
+    "ws": "^2.3.1"
   }
 }
