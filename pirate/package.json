@@ -1,0 +1,14 @@
+{
+  "name": "pirate-radio-radiodan-controller",
+  "version": "1.0.0",
+  "description": "Process to handle button presses on the pimoroni pirate radio and dispatch to radiodan",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "phatbeat": "^1.0.0"
+  }
+}
