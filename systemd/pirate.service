@@ -1,0 +1,16 @@
+[Unit]
+Description=Physical interface for pimoroni pirate radio
+Requires=manager-web-server.service
+After=manager-web-server.service
+
+[Service]
+WorkingDirectory=/opt/radiodan/rde/pirate
+ExecStart=/usr/local/bin/npm start
+Restart=on-failure
+StandardOutput=syslog
+SyslogIdentifier=rde-pirate
+Type=idle
+Environment=PORT=5100
+
+[Install]
+WantedBy=multi-user.target

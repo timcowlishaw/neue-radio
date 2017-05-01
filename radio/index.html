@@ -11,24 +11,84 @@
    const playlist_url = "http://radio.timcowlishaw.co.uk/playlist";
   </script>
   <script>
-   const req = new XMLHttpRequest();
    let playlist;
+   let index = 0;
+   let playing = false;
+   let  audio = document.querySelector("#audio");
+
+   function playTrack(ix) {
+       index = ix;
+       playing = true;
+       const audio_url = playlist[index].url;
+       audio.setAttribute("src", audio_url);
+       audio.setAttribute("autoplay", "autoplay");
+   };
+
+   function playPause() {
+       if(playing) {
+         audio.pause();
+       } else {
+         audio.play();
+       }
+       playing = !playing;
+   };
+
+   function fastForward() {
+       playTrack(index + 1);
+   };
+
+   function rewind() {
+       playTrack(index - 1);
+   };
+
+   function volUp() {
+       audio.volume += 0.1;
+   };
+
+   function volDown() {
+       audio.volume -= 0.1;
+   };
+
+
+   window.player = {
+       playPause: playPause,
+       fastForward: fastForward,
+       rewind: rewind,
+       volUp: volUp,
+       volDown: volDown
+   };
+
+   const req = new XMLHttpRequest();
    req.open("GET", playlist_url);
    req.onload = function() {
        playlist = JSON.parse(req.response);
-       const first_audio = playlist[0].url;
-       var audio = document.querySelector("#audio");
-       audio.setAttribute("src", first_audio);
-       audio.setAttribute("autoplay", "autoplay");
+       playTrack(0);
    }
    req.send();
+
    const ws = new WebSocket('ws://' + location.hostname + ':8000');
     ws.addEventListener('open', function (evt) {
       console.log('connected');
     });
     ws.addEventListener('message', function (evt) {
-      const msg = JSON.parse(evt.data);
-      console.log(msg);
+        switch(evt.data) {
+            case "PLAY_PAUSE":
+                playPause();
+                break;
+            case "FAST_FORWARD":
+                fastForward();
+                break;
+            case "REWIND":
+                rewind();
+                break;
+            case "VOL_UP":
+                volUp();
+                break;
+            case "VOL_DOWN":
+                volDown();
+                break;
+        }
+
     });
   </script>
 </body>
